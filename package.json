@@ -1,0 +1,54 @@
+{
+  "name": "dsh-theme-colors",
+  "version": "0.1.0",
+  "description": "DSH Web 界面配色调节插件：在设置里直接调整会话栏、左右侧栏与文字色，含 OKLCH 深度/鲜亮度调节、日间夜间方案与预设",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "theme",
+    "colors",
+    "oklch",
+    "accessibility"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings-general"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node scripts/test-palette.mjs && node scripts/test-host.mjs && node scripts/test-gui.mjs && node scripts/test-client.mjs && node scripts/test-color.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alicex7777/dsh-theme-colors.git"
+  },
+  "homepage": "https://github.com/Alicex7777/dsh-theme-colors#readme",
+  "bugs": {
+    "url": "https://github.com/Alicex7777/dsh-theme-colors/issues"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,7 @@
+# 依赖与产物（本插件无需安装依赖，留作以防）
+node_modules/
+
+# 运行/调试痕迹
+*.log
+.DS_Store
+Thumbs.db

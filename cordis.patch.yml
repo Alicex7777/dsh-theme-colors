@@ -1,0 +1,13 @@
+# ============================================================================
+# dsh-theme-colors —— DSH bundle patch
+# ============================================================================
+# 插件的挂载声明。DSH 启动时按 bundle 层栈叠加各插件 patch，本文件把配色插件
+# 插入 Web profile 的配置树。
+#
+# 安装：dsh plugin --profile web add link:C:\Users\l\Documents\DSH\dsh-theme-colors
+# 卸载：dsh plugin --profile web remove dsh-theme-colors
+# ============================================================================
+
+- insert:
+    - id: dsh-theme-colors
+      name: dsh-theme-colors

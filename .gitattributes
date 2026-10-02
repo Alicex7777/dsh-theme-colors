@@ -1,0 +1,8 @@
+# 统一以 LF 存入仓库，避免 Windows 上反复改写、也避免 diff 噪声
+* text=auto eol=lf
+
+# 明确二进制
+*.png binary
+*.jpg binary
+*.woff2 binary
+*.mp3 binary
