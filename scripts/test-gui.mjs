@@ -205,7 +205,7 @@ let putCount = 0
 let lastPut = null
 let lastThemePut = null
 let themeStatus = 200
-const payload = (css) => ({ ok: true, config, defaults: { launcher: true, regions: {} }, css, configFile: 'C:/Users/l/.dsh/.dsh-theme-colors.json', modes: ['light', 'dark'], regions })
+const payload = (css) => ({ ok: true, config, defaults: { launcher: true, regions: {} }, css, configFile: '/home/user/.dsh/.dsh-theme-colors.json', modes: ['light', 'dark'], regions })
 globalThis.fetch = async (url, options) => {
 	// 官方主题切换接口（GET 用于探测可用性，PUT 用于切换）。
 	if (String(url).indexOf('/theme.json') !== -1) {

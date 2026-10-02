@@ -19,20 +19,90 @@ DSH（DeepSeek Harness）Web 界面的配色调节插件。**在界面里直接�
 
 ## 安装
 
-先拿到本仓库（克隆或下载），在**仓库根目录**（含 `package.json` 的那一层）执行：
+DSH 的插件都装在 **profile** 里（本插件的 Web profile 名为 `web`），安装命令会把仓库以 `link:` 方式登记进 profile，
+并自动追加到该 profile 的 `dsh.profile.bundles`。下面分两种情形：**你自己手动装** / **让 AI agent 帮你装**。
+
+### A. 手动安装（你本人操作）
+
+**前提**：`dsh` 可用（`dsh --version` 能出版本号）、`pnpm` 可用（`pnpm -v`；没有就 `npm i -g pnpm`）。
+不需要 Node 依赖，本插件零依赖。
+
+1. **取得代码**（二选一）
+
+   ```powershell
+   git clone https://github.com/Alicex7777/dsh-theme-colors.git D:\repos\dsh-theme-colors
+   ```
+
+   或在仓库页面点 **Code → Download ZIP** 后解压到任意固定目录（例如 `D:\repos\dsh-theme-colors`）。
+   > 建议放在**不含空格、之后不会随手移动**的目录；移动后需要重新执行第 2 步。
+
+2. **装进 web profile**（在任意终端执行；`link:` 后面是**仓库根目录**，也就是含 `package.json` 的那一层）
+
+   ```powershell
+   dsh plugin --profile web add link:D:\repos\dsh-theme-colors
+   ```
+
+   > ⚠️ 不要写成 `link:D:\repos\dsh-theme-colors\lib` 这种子目录，否则会被当成普通依赖安装，插件不会生效。
+
+3. **确认已登记**
+
+   ```powershell
+   dsh --profile web --dump-config | Select-String dsh-theme-colors
+   ```
+
+   输出里应能看到 `dsh-theme-colors`。
+
+4. **重启 `dsh web`**（宿主侧插件在启动时加载，新增的路由只在启动时注册），然后**回到浏览器按 Ctrl+F5**。
+
+5. **确认装好了**：左下角出现「🎨 配色」按钮；**设置 → 通用** 里多出「配色」卡片。
+   也可以直接看接口：
+
+   ```powershell
+   curl.exe -s -o NUL -w "%{http_code}`n" http://127.0.0.1:3080/dsh-theme-colors/config.json   # 期望 200
+   curl.exe -s http://127.0.0.1:3080/dsh-theme-colors/gui.js | Select-String dsh-theme-colors:open
+   ```
+
+**卸载 / 重装**
 
 ```powershell
-# <本仓库绝对路径> 换成你克隆下来的目录，例如 D:\repos\dsh-theme-colors
-dsh plugin --profile web add link:<本仓库绝对路径>
+dsh plugin --profile web remove dsh-theme-colors    # 卸载（之后重启 dsh web）
+dsh plugin --profile web add link:D:\repos\dsh-theme-colors   # 移动过目录后重新登记
 ```
 
-安装后**重启 `dsh web`**，再刷新浏览器。若只是想让改动生效而不重装，见「修改插件后如何生效」。
+### B. 让 agent 帮你安装（把下面整段发给 AI）
 
-卸载：
+````text
+请帮我在这台机器上安装 DSH 插件 dsh-theme-colors，来源是 GitHub 仓库 Alicex7777/dsh-theme-colors。
 
-```powershell
-dsh plugin --profile web remove dsh-theme-colors
-```
+背景知识（省得你摸索）：
+- DSH 的插件不是装到 DSH 自身目录里，而是装进「profile」。本机用到的 Web profile 名为 web，
+  目录在 $DSH_HOME/profiles/web（DSH_HOME 默认是 ~/.dsh，Windows 上是 C:\Users\<用户名>\.dsh）。
+- 仓库根目录就是插件包本身（含 package.json 与 cordis.patch.yml），安装时用 link: 指向它。
+- 宿主侧代码只在 dsh web 启动时加载，所以装完必须重启 dsh web；界面脚本虽按请求现读，但也要刷新页面。
+
+请按这个顺序做，并把每一步的结果告诉我：
+1. 检查工具：`dsh --version`、`pnpm -v`。pnpm 缺失就 `npm i -g pnpm`（Windows 上若 PowerShell 禁止运行 .ps1，
+   用 dsh.cmd / pnpm.cmd 调用）。
+2. 取代码：克隆到固定目录，例如：
+   git clone https://github.com/Alicex7777/dsh-theme-colors.git <一个不含空格、不会随手移动的目录>
+   如果这台机器连不上 github.com:443，就改用浏览器下载 ZIP 解压，或问我要一个本地副本；
+   不要因为克隆失败就跳过——先告诉我卡在哪。
+3. 安装（link: 指向仓库根目录，不要带 /lib 之类子目录）：
+   dsh plugin --profile web add link:<仓库绝对路径>
+4. 校验登记：`dsh --profile web --dump-config` 的输出里应出现 dsh-theme-colors；
+   另外 $DSH_HOME/profiles/web/package.json 的 dsh.profile.bundles 里也应有它。
+5. 重启 dsh web；等端口 3080 起来后验证：
+   - `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3080/dsh-theme-colors/config.json` 期望 200
+   - `curl -s http://127.0.0.1:3080/dsh-theme-colors/gui.js` 里能看到 dsh-theme-colors:open
+6. 让我在浏览器 Ctrl+F5，然后确认：左下角有「🎨 配色」按钮、设置 → 通用 里有「配色」卡片。
+   如果按钮没出现，先看浏览器控制台里有没有含 dsh-theme-colors 的告警，把原文发我。
+
+排错提示：
+- 若报 pnpm 找不到：装 pnpm 后重试；Windows 下注意 .ps1 执行策略会拦截 pnpm.ps1，改用 pnpm.cmd。
+- 若安装成功但界面没变化：确认第 5 步的两个 200/输出，并确认真的重启过 dsh web、浏览器强刷过。
+- 卸载：`dsh plugin --profile web remove dsh-theme-colors`，再重启 dsh web。
+- 本插件不含任何密钥；它只在 $DSH_HOME/.dsh-theme-colors.json 里存配色，不会碰 DSH 自身安装目录。
+````
 
 ## 使用
 
