@@ -1,6 +1,6 @@
 # dsh-theme-colors
 
-[![tests](https://img.shields.io/badge/tests-5%20suites-brightgreen)](#开发)
+[![tests](https://github.com/Alicex7777/dsh-theme-colors/actions/workflows/test.yml/badge.svg)](https://github.com/Alicex7777/dsh-theme-colors/actions/workflows/test.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 DSH（DeepSeek Harness）Web 界面的配色调节插件。**在界面里直接改**：不用改代码、不用重启浏览器，颜色即时生效并持久保存。
